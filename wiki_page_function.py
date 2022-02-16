@@ -1,3 +1,4 @@
+from socket import timeout
 import requests
 import concurrent.futures
 
@@ -26,6 +27,15 @@ if __name__ == "__main__":
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = []
         for url in wiki_page_urls:
-            futures.append(executor.submit(get_wiki_page_existence, wiki_page_url=url))
+            futures.append(
+                executor.submit(
+                    get_wiki_page_existence, 
+                    wiki_page_url=url,
+                    timeout=0.00001
+                )
+            )
         for future in concurrent.futures.as_completed(futures):
-            print(future.result())
+            try:
+                print(future.result())
+            except requests.ConnectTimeout:
+                print("ConnectTimeout.")
