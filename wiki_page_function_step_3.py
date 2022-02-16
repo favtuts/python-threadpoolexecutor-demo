@@ -1,4 +1,3 @@
-from socket import timeout
 import requests
 import concurrent.futures
 
@@ -14,8 +13,6 @@ def get_wiki_page_existence(wiki_page_url, timeout=10):
     return wiki_page_url + " - " + page_status
 
 if __name__ == "__main__":
-    #url = "https://en.wikipedia.org/wiki/Ocean"
-    #print(get_wiki_page_existence(wiki_page_url=url))
 
     wiki_page_urls = [
         "https://en.wikipedia.org/wiki/Ocean",
@@ -31,7 +28,7 @@ if __name__ == "__main__":
                 executor.submit(
                     get_wiki_page_existence, 
                     wiki_page_url=url,
-                    timeout=0.00001
+                    timeout=0.00001              
                 )
             )
         for future in concurrent.futures.as_completed(futures):
